@@ -1,0 +1,26 @@
+# Application Server Port Definition
+# Definition of Spring Cloud Function that handles the Responsibility of the Event Consumer
+# Spring Cloud Binding for the Function in destination topics
+# Spring Cloud Kafka Function binding of Consumer value Deserialization Configuration
+# Key Serializer is considered to be the default org.apache.kafka.common.serialization.StringSerializer
+# Kafka Broker Binding defined for a Single Broker Environment that can be increased as per Brokers increment in any env
+
+server:
+  port: 8084
+
+spring.cloud.stream:
+  function:
+    definition: messagesConsumer
+  bindings:
+    messagesConsumer-in-0:
+      destination: kafka-active-stream-topic
+  kafka:
+    bindings:
+      messagesConsumer-in-0:
+        consumer:
+          configuration:
+            value:
+              deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    binder:
+      brokers:
+        - localhost:9092
